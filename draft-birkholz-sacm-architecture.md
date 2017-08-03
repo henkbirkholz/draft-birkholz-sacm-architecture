@@ -128,8 +128,8 @@ function incorporated in Brokers.
 ## SACM Function Roles
 
 Every function incorporated in a SACM Component MUST support the flow information and corresponding
-processing of information in a SACM Domain. There is no finite list of SACM Function, but there is a
-well known set of function for the control-plane and the management-plane.
+processing of information in a SACM Domain. There is no finite list of SACM Functions, but there is a
+well known set of functions for the control-plane and the management-plane:
 
 * Registration Applicant and Applicant Registrar
 * Collection Guidance Provider and Collection Guidance Consumer

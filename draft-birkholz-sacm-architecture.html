@@ -279,6 +279,8 @@ address {
 <link href="#rfc.section.1.1" rel="Chapter" title="1.1 Requirements notation">
 <link href="#rfc.section.2" rel="Chapter" title="2 Roles in SACM">
 <link href="#rfc.section.2.1" rel="Chapter" title="2.1 Base Roles">
+<link href="#rfc.section.2.2" rel="Chapter" title="2.2 SACM Component Roles">
+<link href="#rfc.section.2.3" rel="Chapter" title="2.3 SACM Function Roles">
 <link href="#rfc.section.3" rel="Chapter" title="3 IANA considerations">
 <link href="#rfc.section.4" rel="Chapter" title="4 Security Considerations">
 <link href="#rfc.section.5" rel="Chapter" title="5 Acknowledgements">
@@ -356,6 +358,10 @@ address {
 </li>
 <ul><li>2.1.   <a href="#rfc.section.2.1">Base Roles</a>
 </li>
+<li>2.2.   <a href="#rfc.section.2.2">SACM Component Roles</a>
+</li>
+<li>2.3.   <a href="#rfc.section.2.3">SACM Function Roles</a>
+</li>
 </ul><li>3.   <a href="#rfc.section.3">IANA considerations</a>
 </li>
 <li>4.   <a href="#rfc.section.4">Security Considerations</a>
@@ -386,21 +392,51 @@ address {
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#roles-in-sacm" id="roles-in-sacm">Roles in SACM</a>
 </h1>
-<p id="rfc.section.2.p.1">The architectural building blocks a SACM domain is composed of are very modular. There are three tiers of roles that facilitate this modular composability.</p>
+<p id="rfc.section.2.p.1">The architectural building blocks a SACM Domain is composed of are very modular. There are three tiers of roles that facilitate this modular composability.</p>
 <h1 id="rfc.section.2.1">
 <a href="#rfc.section.2.1">2.1.</a> <a href="#base-roles" id="base-roles">Base Roles</a>
 </h1>
-<p id="rfc.section.2.1.p.1">Every endpoint that is part of a SACM domain can take one or two of the following base roles:</p>
+<p id="rfc.section.2.1.p.1">Every endpoint that is part of a SACM Domain MUST take on at least one of the following roles:</p>
 <p></p>
 
 <ul>
-<li>Target Endpoint, and</li>
+<li>Either Target Endpoint or Excluded Endpoint, or</li>
 <li>SACM Component.</li>
 </ul>
-<p id="rfc.section.2.1.p.3">Target Endpoints are the endpoints of interest a SACM domain. Ultimately, these endpoints are monitored continuously in order to enable security posture assessment, compliance assessment and eventually remediation or mitigation of violations to security requirements in a SACM Domain.</p>
-<p id="rfc.section.2.1.p.4">SACM Components facilitate every activity conducted in a SACM domain, such as collection (of measured or acuirelife data), the conveyance</p>
-<p id="rfc.section.2.1.p.5">SACM component roles:</p>
-<p id="rfc.section.2.1.p.6">SACM function roles:</p>
+<p id="rfc.section.2.1.p.3">Target Endpoints are the endpoints of interest in a SACM Domain. Ultimately, these endpoints are monitored continuously in order to enable security posture assessment, compliance assessment and eventually remediation or mitigation of violations to security requirements in a SACM Domain. If an endpoint that is part of the SACM Domain, is not a SACM Component and is not to be monitored, it MUST take on the role of Excluded Endpoint.</p>
+<p id="rfc.section.2.1.p.4">SACM Components facilitate every activity conducted in a SACM Domain that enable security posture assessment via specific functions, such as the collection (of measured or otherwise acquired endpoint attributes) from data sources, the conveyance of annotated statements about security posture, or the assessment via imperative and declarative guidance.</p>
+<p id="rfc.section.2.1.p.5">An endpoint MAY take on both the role of a Target Endpoint and a SACM Component. In this case, information produced is fed directly into the SACM Domain by a software agent (that is a SACM Component) residing on the Target Endpoint without the indirection of a collecting SACM Component.</p>
+<h1 id="rfc.section.2.2">
+<a href="#rfc.section.2.2">2.2.</a> <a href="#sacm-component-roles" id="sacm-component-roles">SACM Component Roles</a>
+</h1>
+<p id="rfc.section.2.2.p.1">Every SACM Component MAY incorporate functions that either produce information on the data-plane or consume information on the data-plane. The corresponding two roles a SACM Component can take on are:</p>
+<p></p>
+
+<ul>
+<li>Consumer of Information (in short: Consumer or Subscriber), and</li>
+<li>Provider of Information (in short: Provider or Publisher).</li>
+</ul>
+<p id="rfc.section.2.2.p.3">A SACM Component MAY take on both roles at once, for example, consuming information via one set of functions, processing them internally, and then providing the results via another set of functions.</p>
+<p id="rfc.section.2.2.p.4">On the control-plane, every SACM Component MUST incorporate functions that enable it to take on the role of an:</p>
+<p></p>
+
+<ul>
+<li>Applicant, or</li>
+<li>Broker.</li>
+</ul>
+<p id="rfc.section.2.2.p.6">All activities of SACM components in a SACM domain MUST be orchestrated. Orchestration is facilitated by conveying imperative guidance between Applicants and Brokers. Every Applicant MUST register the functions it is designed to expose to the SACM Domain as Capabilities to a Broker. A Broker MUST make the set of registered Capabilities (or a well-defined subset) available to other Applicants.</p>
+<p id="rfc.section.2.2.p.7">The set of Capabilities made available by a Broker SHOULD be restricted by a Content Authorization function incorporated in Brokers.</p>
+<h1 id="rfc.section.2.3">
+<a href="#rfc.section.2.3">2.3.</a> <a href="#sacm-function-roles" id="sacm-function-roles">SACM Function Roles</a>
+</h1>
+<p id="rfc.section.2.3.p.1">Every function incorporated in a SACM Component MUST support the flow information and corresponding processing of information in a SACM Domain. There is no finite list of SACM Function, but there is a well known set of function for the control-plane and the management-plane.</p>
+<p></p>
+
+<ul>
+<li>Registration Applicant and Applicant Registrar</li>
+<li>Collection Guidance Provider and Collection Guidance Consumer</li>
+<li>etc.pp. Note: Is this the correct level of detail or do we want "Collector" and "Assessor" here?</li>
+</ul>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#iana-considerations" id="iana-considerations">IANA considerations</a>
 </h1>

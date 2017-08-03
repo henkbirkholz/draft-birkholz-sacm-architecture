@@ -55,9 +55,16 @@ The SACM Architecture Abstract (this is obviously a place-holder)
 
 # Introduction
 
-Security Automation and Continuous Monitoring is conducted in a SACM domain. This document defines the architectural components and corresponding roles a SACM Domain is composed of. The goal is to enable interoperability between standard SACM Components and a minimal level of automated orchestration that is always supported in a SACM Domain.
+Security Automation and Continuous Monitoring is conducted in a SACM domain. This document defines
+the architectural components and corresponding roles a SACM Domain is composed of. The goal is to
+enable interoperability between standard SACM Components and a minimal level of automated
+orchestration that is always supported in a SACM Domain.
 
-In consequence, this document also provides the reference terminology vital to security automation or related to network-based remote assessment of security posture. Terms defined or referenced by the SACM Architecture document are either not covered in or derived from RFC4949, or show an impedance mismatch across existing standards and are unified via this document for future application in the domain of security automation.
+In consequence, this document also provides the reference terminology vital to security automation
+or related to network-based remote assessment of security posture. Terms defined or referenced by
+the SACM Architecture document are either not covered in or derived from RFC4949, or show an
+impedance mismatch across existing standards and are unified via this document for future
+application in the domain of security automation.
 
 ## Requirements notation
 
@@ -68,22 +75,65 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 
 # Roles in SACM
 
-The architectural building blocks a SACM domain is composed of are very modular. There are three tiers of roles that facilitate this modular composability.
+The architectural building blocks a SACM Domain is composed of are very modular. There are three
+tiers of roles that facilitate this modular composability.
 
 ## Base Roles
 
-Every endpoint that is part of a SACM domain can take one or two of the following base roles:
+Every endpoint that is part of a SACM Domain MUST take on at least one of the following roles:
 
-* Target Endpoint, and
+* Either Target Endpoint or Excluded Endpoint, or
 * SACM Component.
 
-Target Endpoints are the endpoints of interest a SACM domain. Ultimately, these endpoints are monitored continuously in order to enable security posture assessment, compliance assessment and eventually remediation or mitigation of violations to security requirements in a SACM Domain.
+Target Endpoints are the endpoints of interest in a SACM Domain. Ultimately, these endpoints are
+monitored continuously in order to enable security posture assessment, compliance assessment and
+eventually remediation or mitigation of violations to security requirements in a SACM Domain. If an
+endpoint that is part of the SACM Domain, is not a SACM Component and is not to be monitored, it
+MUST take on the role of Excluded Endpoint.
 
-SACM Components facilitate every activity conducted in a SACM domain, such as collection (of measured or acuirelife data), the conveyance
+SACM Components facilitate every activity conducted in a SACM Domain that enable security posture
+assessment via specific functions, such as the collection (of measured or otherwise acquired
+endpoint attributes) from data sources, the conveyance of annotated statements about security
+posture, or the assessment via imperative and declarative guidance.
 
-SACM component roles:
+An endpoint MAY take on both the role of a Target Endpoint and a SACM Component. In this case,
+information produced is fed directly into the SACM Domain by a software agent (that is a SACM
+Component) residing on the Target Endpoint without the indirection of a collecting SACM Component.
 
-SACM function roles:
+## SACM Component Roles
+
+Every SACM Component MAY incorporate functions that either produce information on the data-plane or
+consume information on the data-plane. The corresponding two roles a SACM Component can take on are:
+
+* Consumer of Information (in short: Consumer or Subscriber), and
+* Provider of Information (in short: Provider or Publisher).
+
+A SACM Component MAY take on both roles at once, for example, consuming information via one set of
+functions, processing them internally, and then providing the results via another set of functions.
+
+On the control-plane, every SACM Component MUST incorporate functions that enable it to take on the
+role of an:
+
+* Applicant, or
+* Broker.
+
+All activities of SACM components in a SACM domain MUST be orchestrated. Orchestration is
+facilitated by conveying imperative guidance between Applicants and Brokers. Every Applicant MUST
+register the functions it is designed to expose to the SACM Domain as Capabilities to a Broker. A
+Broker MUST make the set of registered Capabilities (or a well-defined subset) available to other Applicants.
+
+The set of Capabilities made available by a Broker SHOULD be restricted by a Content Authorization
+function incorporated in Brokers.
+
+## SACM Function Roles
+
+Every function incorporated in a SACM Component MUST support the flow information and corresponding
+processing of information in a SACM Domain. There is no finite list of SACM Function, but there is a
+well known set of function for the control-plane and the management-plane.
+
+* Registration Applicant and Applicant Registrar
+* Collection Guidance Provider and Collection Guidance Consumer
+* etc.pp. Note: Is this the correct level of detail or do we want "Collector" and "Assessor" here?
 
 #  IANA considerations
 
